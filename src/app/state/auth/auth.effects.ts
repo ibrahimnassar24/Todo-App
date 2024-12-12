@@ -27,7 +27,8 @@ export class AuthEffects {
     },
         { dispatch: false });
 
-    signInWithEmailAndPassword$ = createEffect(() => {
+    
+        signInWithEmailAndPassword$ = createEffect(() => {
         const actions$ = inject(Actions);
         return actions$.pipe(
             ofType(authActions.signInWithEmailAndPassword),
@@ -45,6 +46,7 @@ export class AuthEffects {
         )
     })
 
+    
     signInWithLink$ = createEffect(() => {
         const actions$ = inject(Actions);
 
@@ -64,6 +66,7 @@ export class AuthEffects {
         );
     });
 
+    
     confirmSignInWithLink$ = createEffect(() => {
         const actions$ = inject(Actions);
         return actions$.pipe(
@@ -82,6 +85,7 @@ export class AuthEffects {
 
     });
 
+    
     signInWithGoogle$ = createEffect(() => {
         const actions$ = inject(Actions);
         return actions$.pipe(
@@ -100,6 +104,7 @@ export class AuthEffects {
         );
     });
 
+    
     signInWithFacebook$ = createEffect(() => {
         const actions$ = inject(Actions);
         return actions$.pipe(
@@ -117,6 +122,7 @@ export class AuthEffects {
         );
     })
 
+    
     signUp$ = createEffect(() => {
         const actions$ = inject(Actions);
         return actions$.pipe(
@@ -135,6 +141,7 @@ export class AuthEffects {
         );
     })
 
+    
     signOut$ = createEffect(() => {
         const actions$ = inject(Actions);
         return actions$.pipe(
@@ -153,6 +160,7 @@ export class AuthEffects {
         );
     })
 
+
     initiateemailVerification$ = createEffect(() => {
         const actions$ = inject(Actions);
         return actions$.pipe(
@@ -170,6 +178,7 @@ export class AuthEffects {
         );
     });
 
+    
     confirmEmailVerification$ = createEffect(() => {
         const actions$ = inject(Actions);
         return actions$.pipe(
@@ -187,6 +196,7 @@ export class AuthEffects {
         );
     });
 
+    
     updateDisplayNameOrPhotoUrl$ = createEffect(() => {
         const actions$ = inject(Actions);
         const store = inject(Store);
@@ -210,6 +220,7 @@ export class AuthEffects {
         );
     });
 
+    
     updatePassword$ = createEffect(() => {
         const actions$ = inject(Actions);
         const store = inject(Store);

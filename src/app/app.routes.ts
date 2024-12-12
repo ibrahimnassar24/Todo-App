@@ -26,5 +26,9 @@ export const routes: Routes = [
         path: 'about',
         component: Pages.AboutPage,
         canActivate:[authGuard]
+    },
+    {
+        path: 'settings',
+        component: Pages.SettingsPage
     }
 ];
