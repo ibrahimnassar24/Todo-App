@@ -28,7 +28,7 @@ export class TestPage {
     private store: Store
   ) {
     this.email = "test.ibrahimnassar@gmail.com";
-    this.password = "qwe123";
+    this.password = "zxc123";
     this.status = this.store.select(authSelectors.selectStatus);
 
   }
@@ -59,9 +59,9 @@ export class TestPage {
     this.store.dispatch( authActions.confirmEmailVerification() );
   }
   changePassword() {
-    const oldPassword = prompt("Enter the current password");
-    const newPassword = prompt("Enter the new password");
-    this.authService.changePassword(oldPassword!, newPassword!)
+    const currentPassword = prompt("Enter the current password") ?? "";
+    const newPassword = prompt("Enter the new password") ?? "";
+    this.store.dispatch( authActions.updatePassword({ currentPassword, newPassword}) )
   }
 
 sendPasswordEmail() {

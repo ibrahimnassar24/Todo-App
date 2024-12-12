@@ -192,7 +192,7 @@ export class AuthEffects {
         const store = inject(Store);
         return actions$.pipe(
             ofType(authActions.updateDisplayNameOrPhotoUrl),
-            tap( () => store.dispatch(authActions.initiateAuthAction())),
+            tap(() => store.dispatch(authActions.initiateAuthAction())),
             concatMap(action => {
 
                 return from(this.authService.updateProfileDisplyNameOrPhotoUrl(action))
@@ -209,4 +209,28 @@ export class AuthEffects {
 
         );
     });
+
+    updatePassword$ = createEffect(() => {
+        const actions$ = inject(Actions);
+        const store = inject(Store);
+        return actions$.pipe(
+            ofType(authActions.updatePassword),
+            tap(() => store.dispatch(authActions.initiateAuthAction())),
+            concatMap(action => {
+
+                return from(this.authService.changePassword(action.currentPassword, action.newPassword))
+                    .pipe(
+                        map(() => authActions.completeAuthAction()),
+                        catchError(e => of(authActions.authActionFailed({
+                            error: e,
+                            action: action.type
+                        })))
+                    )
+            }
+
+            )
+
+        );
+    });
+
 }
