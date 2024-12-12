@@ -1,0 +1,19 @@
+<div>
+    @if (signin) {
+    <app-signin-form></app-signin-form>
+    }
+    @else {
+    <app-signup-form></app-signup-form>
+    }
+    <span (click)="toggleSignin()">
+        @if(signin) {
+            create a new  account
+        }
+        @else {
+            already have an account
+        }
+    </span>
+</div>
+<div>
+    <button (click)="signOut()">Sign Out</button>
+</div>

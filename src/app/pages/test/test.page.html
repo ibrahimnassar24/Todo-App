@@ -1,0 +1,66 @@
+<h1>here is the testing ground</h1>
+<ul>
+    <li>
+        <button id="issignedin" (click)="print()">is signed in</button>
+    </li>
+    <li>
+        <button id="printuser">print user</button>
+    </li>
+    <li>
+        <button id="signup" (click)="register()">sign up</button>
+    </li>
+    <li>
+        <button id="signin" (click)="logIn()">sign in</button>
+    </li>
+    <li>
+        <button id="signout" (click)="logOut()">sign out</button>
+    </li>
+    <li>
+        <button id="sendemail" (click)="verify()">send email</button>
+    </li>
+    <li>
+        <button id="confirmemailverification" (click)="confirmEmailVerification()">Confirm Verification Email</button>
+    </li>
+    <li>
+        <button id="changeprofile">change profile</button>
+    </li>
+    <li>
+        <button id="sendpasswordemail" (click)="sendPasswordEmail()">send password email</button>
+    </li>
+    <li>
+        <button id="confirmpasswordemail">Confirm password email</button>
+    </li>
+    <li>
+        <button id="changepassword" (click)="changePassword()">change password</button>
+    </li>
+    <li>
+        <button id="signinwithlink" (click)="signInWithLink()">sign in with link</button>
+    </li>
+    <li>
+        <button id="confirsigninlink" (click)="confirmSignInLink()">confirm sign in link</button>
+    </li>
+    <li>
+        <button id="deleteuser" (click)="deleteUser()">delete current user</button>
+    </li>
+    <li>
+        <button id="reauthenticate" (click)="reauthenticate()">re-authenticate</button>
+    </li>
+    <li>
+        <button id="enrolltopt" (click)="enrollTotp()">enroll TOPT</button>
+    </li>
+    <li>
+        <button id="unenrollfromtopt" (click)="unenroll()">unenroll from TOPT</button>
+    </li>
+    <li>
+        <button id="signinwithgoogle" (click)="signInWithGoogle()">Sign in with Google</button>
+    </li>
+    <li>
+        <button id="facebook" (click)="signInWithFacebook()">Sign In With Facebook</button>
+    </li>
+    <li>
+        <button id="test" (click)="test()">Test</button>
+    </li>
+</ul>
+@if ((status | async) == "loading") {
+    <h1>Loading</h1>
+}

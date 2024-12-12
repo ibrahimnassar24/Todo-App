@@ -1,0 +1,24 @@
+<div>
+
+    <div>
+        <h1>Sign In</h1>
+        <p></p>
+    </div>
+
+    <div>
+        <form [formGroup]="signInFormState" (ngSubmit)="onSignIn($event)">
+            <div>
+                <input type="text" id="email" formControlName="email" placeholder="Enter your email">
+            </div>
+
+            <div>
+                <input type="password" id="password" formControlName="password" placeholder="Enter your password">
+            </div>
+
+            <div>
+                <button type="submit">Sign In</button>
+            </div>
+        </form>
+    </div>
+
+</div>
