@@ -1,7 +1,14 @@
 
 export interface Todo {
-    id: string;
+    id?: string;
+    ownerId: string;
     title: string;
     content: string;
-    status: 'wating' | 'started' | 'finished';
+    status: 'scheduled' | 'started' | 'finished';
+}
+
+export interface TodoToUpdate {
+    title?: string;
+    content?: string;
+    status?: 'scheduled' | 'started' | 'finished';
 }
