@@ -60,7 +60,8 @@
     <li>
         <button id="test" (click)="test()">Test</button>
     </li>
+    <li>
+        <button (click)="getTodos()">Get todos</button>
+    </li>
 </ul>
-@if ((status | async) == "loading") {
-    <h1>Loading</h1>
-}
+<p>{{ todos | async }}</p>

@@ -365,4 +365,9 @@ export class AuthService {
     return temp;
   }
 
+  getCurrentUserUid() {
+    if(!this.auth.currentUser) throw "you should sign in first";
+    return this.auth.currentUser.uid;
+  }
+
 }
