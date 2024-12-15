@@ -8,6 +8,7 @@ import { reducers } from './state/index.reducers';
 import { effects } from './state/index.effects';
 import { FirebaseService } from './services/firebase.service';
 import { AuthService } from './services/auth.service';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,6 +17,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideStore(reducers),
     provideEffects(effects),
-    FirebaseService
+    FirebaseService, provideAnimationsAsync()
   ]
 };

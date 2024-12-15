@@ -5,14 +5,13 @@ import * as authActions from '../../state/auth/auth.actions';
 import { SignupFormComponent } from '../../components/signup-form/signup-form.component';
 
 @Component({
-  selector: 'app-log',
-  standalone: true,
-  imports: [
-    SigninFormComponent,
-    SignupFormComponent
-  ],
-  templateUrl: './log.page.html',
-  styleUrl: './log.page.css'
+    selector: 'app-log',
+    imports: [
+        SigninFormComponent,
+        SignupFormComponent
+    ],
+    templateUrl: './log.page.html',
+    styleUrl: './log.page.css'
 })
 export class LogPage {
   

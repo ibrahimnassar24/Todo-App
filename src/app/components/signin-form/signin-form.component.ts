@@ -3,13 +3,12 @@ import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as authActions from '../../state/auth/auth.actions';
 @Component({
-  selector: 'app-signin-form',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule
-  ],
-  templateUrl: './signin-form.component.html',
-  styleUrl: './signin-form.component.css'
+    selector: 'app-signin-form',
+    imports: [
+        ReactiveFormsModule
+    ],
+    templateUrl: './signin-form.component.html',
+    styleUrl: './signin-form.component.css'
 })
 export class SigninFormComponent {
   

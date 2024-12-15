@@ -4,13 +4,12 @@ import { Store } from '@ngrx/store';
 import * as authActions from '../../state/auth/auth.actions';
 
 @Component({
-  selector: 'app-signup-form',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule
-  ],
-  templateUrl: './signup-form.component.html',
-  styleUrl: './signup-form.component.css'
+    selector: 'app-signup-form',
+    imports: [
+        ReactiveFormsModule
+    ],
+    templateUrl: './signup-form.component.html',
+    styleUrl: './signup-form.component.css'
 })
 export class SignupFormComponent {
 
