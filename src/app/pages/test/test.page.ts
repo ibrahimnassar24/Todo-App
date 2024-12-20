@@ -9,7 +9,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
         MatSlideToggleModule
     ],
     templateUrl: './test.page.html',
-    styleUrl: './test.page.css'
+    styleUrl: './test.page.scss'
 })
 export class TestPage {
 

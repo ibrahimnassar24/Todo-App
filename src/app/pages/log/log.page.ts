@@ -11,7 +11,7 @@ import { SignupFormComponent } from '../../components/signup-form/signup-form.co
         SignupFormComponent
     ],
     templateUrl: './log.page.html',
-    styleUrl: './log.page.css'
+    styleUrl: './log.page.scss'
 })
 export class LogPage {
   

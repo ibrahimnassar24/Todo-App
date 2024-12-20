@@ -9,7 +9,7 @@ import * as authActions from '../../state/auth/auth.actions';
         ReactiveFormsModule
     ],
     templateUrl: './signup-form.component.html',
-    styleUrl: './signup-form.component.css'
+    styleUrl: './signup-form.component.scss'
 })
 export class SignupFormComponent {
 
