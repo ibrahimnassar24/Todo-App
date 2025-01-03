@@ -1,16 +1,25 @@
 <nav>
-    <ul>
-        <li>
-            <a routerLink="/home" routerLinkActive="active-link">Home</a>
-        </li>
-        <li>
-            <a routerLink="/about" routerLinkActive="active-link">About</a>
-        </li>
-        <li>
-            <a routerLink="/test" routerLinkActive="active-link">Test</a>
-        </li>
-        <li>
-            <a routerLink="/log" routerLinkActive="active-link">Log</a>
-        </li>
-    </ul>
+
+    <div class="nav-wrapper">
+        <div class="logo-wrapper">
+            <h1>logo</h1>
+        </div>
+
+        <div mat-tab-nav-bar class="links-wrapper">
+
+            <a mat-tab-link routerLink="/home" [active]="activeLink == 0" (click)="activeLink = 0">home</a>
+
+            <a mat-tab-link routerLink="/about" [active]="activeLink == 1" (click)="activeLink = 1">
+                about
+            </a>
+
+            <a mat-tab-link routerLink="/test" [active]="activeLink == 2" (click)="activeLink = 2">test</a>
+
+        </div>
+
+        <div class="profile-wrapper">
+            <mat-slide-toggle aria-label="dark mode" (change)="switchMode($event)"></mat-slide-toggle>
+            <app-profile-menu></app-profile-menu>
+        </div>
+    </div>
 </nav>

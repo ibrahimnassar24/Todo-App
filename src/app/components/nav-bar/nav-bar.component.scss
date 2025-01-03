@@ -1,3 +1,23 @@
+.nav-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: light-dark;
+}
+
+.logo-wrapper {
+    flex-grow: 1;
+}
+
+.profile-wrapper {
+    flex-grow: 1;
+
+}
+
+.links-wrapper {
+    flex-grow: 3;
+}
+
 ul {
     margin: 0;
     padding: 0;
@@ -6,9 +26,4 @@ ul {
     justify-content: center;
     align-items: center;
     gap: 30px;
-}
-
-.active-link {
-    color: white;
-    background-color: black;
 }
