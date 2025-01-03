@@ -22,3 +22,13 @@ export const selectUser = createSelector(
     authSelector,
     (s) => s.user
 );
+
+export const selectUserPhotoUrl = createSelector(
+    authSelector,
+    (s) => s.user?.photoURL
+);
+
+export const selectUserDisplayName = createSelector(
+    authSelector,
+    (s) => s.user?.displayName
+);
