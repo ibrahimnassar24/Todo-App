@@ -37,8 +37,7 @@ export class SignupFormComponent {
       email: this.signUpFormState.value.email ?? "",
       password: this.signUpFormState.value.password ?? ""
     };
-console.log(temp);
-    // this.store.dispatch(authActions.signUp(temp));
+    this.store.dispatch(authActions.signUp(temp));
   }
 
   signUpUsingGoogle() {
