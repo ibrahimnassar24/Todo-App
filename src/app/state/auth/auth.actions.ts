@@ -62,10 +62,15 @@ export const updateEmail = createAction(
     "[Auth] Update Email"
 );
 
-export const updateDisplayNameOrPhotoUrl = createAction(
-    "[Auth] Update Display Name Or Photo Url",
-    props<{ displayName?: string, photoUrl?: string}>()
+export const updateDisplayName = createAction(
+    "[Auth] Update Display Name ",
+    props<{ displayName: string}>()
 );
+
+export const updatePhotoUrl = createAction(
+    "[AUTH] Update Photo Url",
+    props<{ photoUrl: string}>()
+)
 
 export const signOut = createAction(
     "[Auth] Sign Out",

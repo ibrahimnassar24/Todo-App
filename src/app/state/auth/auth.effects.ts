@@ -197,15 +197,37 @@ export class AuthEffects {
     });
 
     
-    updateDisplayNameOrPhotoUrl$ = createEffect(() => {
+    updateDisplayName$ = createEffect(() => {
         const actions$ = inject(Actions);
         const store = inject(Store);
         return actions$.pipe(
-            ofType(authActions.updateDisplayNameOrPhotoUrl),
+            ofType(authActions.updateDisplayName),
             tap(() => store.dispatch(authActions.initiateAuthAction())),
             concatMap(action => {
+                return from(this.authService.updateProfileDisplayName(action))
+                    .pipe(
+                        map(() => authActions.completeAuthAction()),
+                        catchError(e => of(authActions.authActionFailed({
+                            error: e,
+                            action: action.type
+                        })))
+                    )
+            }
+            
+            )
 
-                return from(this.authService.updateProfileDisplyNameOrPhotoUrl(action))
+        );
+    });
+
+
+    updatePhotoUrl$ = createEffect(() => {
+        const actions$ = inject(Actions);
+        const store = inject(Store);
+        return actions$.pipe(
+            ofType(authActions.updatePhotoUrl),
+            tap(() => store.dispatch(authActions.initiateAuthAction())),
+            concatMap(action => {
+                return from(this.authService.updateProfilePhotoUrl(action))
                     .pipe(
                         map(() => authActions.completeAuthAction()),
                         catchError(e => of(authActions.authActionFailed({
