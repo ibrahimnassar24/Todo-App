@@ -49,7 +49,6 @@ export class AuthService {
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
         this.store.dispatch(authActions.confirmAuthentication({ user: { ...user.providerData[0] } }));
-        console.log(user)
       } else {
         this.store.dispatch(authActions.confirmSignOut());
       }
@@ -342,15 +341,30 @@ export class AuthService {
   }
 
 
-  async updateProfileDisplyNameOrPhotoUrl(data: { displayName?: string, photoUrl?: string }) {
+  async updateProfileDisplayName(data: { displayName?: string }) {
     try {
-      if (!this.auth.currentUser) throw "you should sign in first"
-      await new Promise<void>((res, rej) => {
-        setTimeout(() => {
-          res();
-        }, 10000);
-      })
-      await updateProfile(this.auth.currentUser, data);
+      const user = this.auth.currentUser;
+      if (user) {
+        await updateProfile(user, {
+          displayName: data.displayName
+        });
+      }
+    }
+    catch (e) {
+      console.log(e)
+      throw e;
+    }
+  }
+
+
+  async updateProfilePhotoUrl(data: { photoUrl?: string }) {
+    try {
+      const user = this.auth.currentUser;
+      if (user) {
+        await updateProfile(user, {
+          photoURL: data.photoUrl
+        });
+      }
     }
     catch (e) {
       console.log(e)
@@ -366,7 +380,7 @@ export class AuthService {
   }
 
   getCurrentUserUid() {
-    if(!this.auth.currentUser) throw "you should sign in first";
+    if (!this.auth.currentUser) throw "you should sign in first";
     return this.auth.currentUser.uid;
   }
 
