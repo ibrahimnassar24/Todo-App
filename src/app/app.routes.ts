@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { Pages } from './pages/pages';
-import { HomePage } from './pages/home/home.page';
-import { LogPage } from './pages/log/log.page';
 import { authGuard } from './guards/auth.guard';
+import { ProfilePageComponent } from './components/profile-page/profile-page.component';
+import { SecurityPageComponent } from './components/security-page/security-page.component';
 
 export const routes: Routes = [
     {
@@ -20,7 +20,7 @@ export const routes: Routes = [
     },
     {
         path: "log",
-        component: LogPage
+        component: Pages.LogPage
     },
     {
         path: 'about',
@@ -29,6 +29,22 @@ export const routes: Routes = [
     },
     {
         path: 'settings',
-        component: Pages.SettingsPage
+        component: Pages.SettingsPage,
+        canActivate: [authGuard],
+        children: [
+            {
+                path: "",
+                redirectTo: "profile",
+                pathMatch: "full"
+            },
+            {
+                path: "profile",
+                component: ProfilePageComponent
+            },
+            {
+                path: "security",
+                component: SecurityPageComponent
+            }
+        ]
     }
 ];
