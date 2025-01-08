@@ -6,7 +6,9 @@
             </mat-card-header>
             <mat-card-content>
                 <ng-container *ngIf="photoUrl$ | async as photoUrl">
-                    <img [src]="photoUrl" alt="User Photo" />
+                    <div class="profile-picture">
+                        <img [src]="photoUrl" alt="User Photo" />
+                    </div>
                 </ng-container>
             </mat-card-content>
             <mat-card-actions>
@@ -17,4 +19,20 @@
     </ng-template>
 </mat-menu>
 
-<button mat-flat-button [mat-menu-trigger-for]="profileMenu">trigger</button>
+@if ( isLogged$ | async) {
+<button mat-button [mat-menu-trigger-for]="profileMenu">
+    <div class="flex-wrapper">
+        <div class="profile-icon">
+            <ng-container *ngIf="photoUrl$ | async as photoUrl">
+                <img [src]="photoUrl" alt="User Photo" />
+            </ng-container>
+        </div>
+        <div>
+            {{ displayName$ | async }}
+        </div>
+    </div>
+</button>
+}
+@else {
+<a mat-button routerLink="/log">Sign in</a>
+}

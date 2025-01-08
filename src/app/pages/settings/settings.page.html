@@ -1,1 +1,17 @@
-<p>settings works!</p>
+<mat-drawer-container class="drawer-container">
+
+    <mat-drawer mode="side" opened position="start">
+        <mat-list>
+            <mat-list-item>
+                <a mat-button routerLink="profile">Profile</a>
+            </mat-list-item>
+            <mat-list-item>
+                <a mat-button routerLink="security">Security</a>
+            </mat-list-item>
+        </mat-list>
+
+    </mat-drawer>
+    <mat-drawer-content>
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+</mat-drawer-container>

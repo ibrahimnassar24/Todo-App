@@ -6,6 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import * as authActions from "../../../state/auth/auth.actions";
 import * as authSelectors from "../../../state/auth/auth.selectors";
+import * as profileActions from "../../../state/profile/profile.actions";
+import * as profileSelectors from "../../../state/profile/profile.selectors";
 import { UserInfo } from 'firebase/auth';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -25,11 +27,14 @@ import { Observable } from 'rxjs';
 export class ProfileMenuComponent {
   photoUrl$: Observable<string | null | undefined>;
   displayName$ : Observable<string | null | undefined>;
+  isLogged$: Observable<boolean>;
+
   constructor(
     private store: Store
   ) {
-    this.photoUrl$ = this.store.select(authSelectors.selectUserPhotoUrl);
-    this.displayName$ = this.store.select(authSelectors.selectUserDisplayName);
+    this.photoUrl$ = this.store.select(profileSelectors.selectPhotoUrl);
+    this.displayName$ = this.store.select(profileSelectors.selectDisplayName);
+    this.isLogged$ = this.store.select(authSelectors.selectIsLogging);
   }
 
   signOut() {
