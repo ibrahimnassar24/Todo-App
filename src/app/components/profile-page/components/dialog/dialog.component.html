@@ -1,0 +1,10 @@
+<h3 mat-dialog-title>{{ data.title }}</h3>
+
+<mat-dialog-content>
+<mat-form-field>
+    <input type="text" matInput [formControl]="value">
+</mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onConfirm()">confirm</button>
+</mat-dialog-actions>

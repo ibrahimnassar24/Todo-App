@@ -1,0 +1,26 @@
+<h1>your profile</h1>
+
+<mat-grid-list cols="3" rowHeight="3:1">
+    <mat-grid-tile>
+        display name:
+    </mat-grid-tile>
+    <mat-grid-tile>
+        {{ displayName$ | async }}
+    </mat-grid-tile>
+    <mat-grid-tile>
+            <app-edit-btn [data]="{title: 'Display Name', value: displayName$ | async}" [action]="onEditDisplayName">
+            </app-edit-btn>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+        Photo URL:
+    </mat-grid-tile>
+    <mat-grid-tile>
+        {{ photoUrl$ | async}}
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <app-edit-btn [data]="{ title: 'choose a photo', value: photoUrl$ | async}" [action]="onEditPhotoUrl">
+
+        </app-edit-btn>
+    </mat-grid-tile>
+</mat-grid-list>
