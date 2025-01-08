@@ -36,8 +36,17 @@ export const authReducer = createReducer(
 
     on(authActions.completeAuthAction,
         ( s ) => {
+            console.log("hello")
             const temp: AuthState = {
                 ...s,
+                user: {
+                    displayName: s.user?.displayName ?? "",
+                    phoneNumber: s.user?.phoneNumber ?? "",
+                    photoURL: s.user?.photoURL ?? "",
+                    email: s.user?.email  ?? "",
+                    providerId: s.user?.providerId ?? "",
+                    uid: s.user?.uid ?? ""
+                },
                 status: "succeeded"
             }
 

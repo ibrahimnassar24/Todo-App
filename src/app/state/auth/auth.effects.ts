@@ -5,29 +5,16 @@ import * as authActions from "./auth.actions";
 import * as authselectors from "./auth.selectors";
 import { AuthService } from "../../services/auth.service";
 import { Store } from "@ngrx/store";
+import { profileSelector } from "../profile/profile.selectors";
 
 @Injectable()
 export class AuthEffects {
 
     constructor(
         private authService: AuthService,
-    ) {
-    }
+    ) {}
 
-    log$ = createEffect(() => {
-        const actions$ = inject(Actions);
-        const store = inject(Store);
-        return actions$.pipe(
-            withLatestFrom(store.select(authselectors.authSelector)),
-            tap(([action, state]) => {
-                console.log(action.type);
-                console.log(state)
-            })
-        );
-    },
-        { dispatch: false });
 
-    
         signInWithEmailAndPassword$ = createEffect(() => {
         const actions$ = inject(Actions);
         return actions$.pipe(
@@ -193,52 +180,6 @@ export class AuthEffects {
                         })))
                     );
             })
-        );
-    });
-
-    
-    updateDisplayName$ = createEffect(() => {
-        const actions$ = inject(Actions);
-        const store = inject(Store);
-        return actions$.pipe(
-            ofType(authActions.updateDisplayName),
-            tap(() => store.dispatch(authActions.initiateAuthAction())),
-            concatMap(action => {
-                return from(this.authService.updateProfileDisplayName(action))
-                    .pipe(
-                        map(() => authActions.completeAuthAction()),
-                        catchError(e => of(authActions.authActionFailed({
-                            error: e,
-                            action: action.type
-                        })))
-                    )
-            }
-            
-            )
-
-        );
-    });
-
-
-    updatePhotoUrl$ = createEffect(() => {
-        const actions$ = inject(Actions);
-        const store = inject(Store);
-        return actions$.pipe(
-            ofType(authActions.updatePhotoUrl),
-            tap(() => store.dispatch(authActions.initiateAuthAction())),
-            concatMap(action => {
-                return from(this.authService.updateProfilePhotoUrl(action))
-                    .pipe(
-                        map(() => authActions.completeAuthAction()),
-                        catchError(e => of(authActions.authActionFailed({
-                            error: e,
-                            action: action.type
-                        })))
-                    )
-            }
-
-            )
-
         );
     });
 
