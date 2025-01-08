@@ -341,36 +341,6 @@ export class AuthService {
   }
 
 
-  async updateProfileDisplayName(data: { displayName?: string }) {
-    try {
-      const user = this.auth.currentUser;
-      if (user) {
-        await updateProfile(user, {
-          displayName: data.displayName
-        });
-      }
-    }
-    catch (e) {
-      console.log(e)
-      throw e;
-    }
-  }
-
-
-  async updateProfilePhotoUrl(data: { photoUrl?: string }) {
-    try {
-      const user = this.auth.currentUser;
-      if (user) {
-        await updateProfile(user, {
-          photoURL: data.photoUrl
-        });
-      }
-    }
-    catch (e) {
-      console.log(e)
-      throw e;
-    }
-  }
 
 
   isLogged() {
