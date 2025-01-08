@@ -7,6 +7,11 @@ export const setProfileInitialValues = createAction(
 );
 
 
+export const resetProfileValues = createAction(
+    "[Profile] Reset Profile Values"
+);
+
+
 export const updateEmail = createAction(
     "[Profile] Update Email",
     props<{ email: string }>()

@@ -22,6 +22,18 @@ export const profileReducer = createReducer(
 
 
     on(
+        profileActions.resetProfileValues,
+        (s) => {
+            const temp: ProfileState = {
+                ...initialValue
+            };
+            
+            return temp;
+        }
+    ),
+
+
+    on(
         profileActions.updateDisplayNameCompleted,
         ( s, { displayName }) => {
             const temp: ProfileState = {
