@@ -1,5 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { User, AuthError, UserInfo } from "firebase/auth";
+import { UserDetails } from "./auth.model";
 
 export const signUp = createAction(
     "[Auth] Sign Up",
@@ -30,7 +31,7 @@ export const signInWithFacebook = createAction(
 
 export const confirmAuthentication = createAction(
     "[Auth] Confirm Authentication",
-    props<{ user: UserInfo}>()
+    props<{ user: UserDetails}>()
 );
 
 export const confirmSignOut = createAction(
@@ -62,15 +63,6 @@ export const updateEmail = createAction(
     "[Auth] Update Email"
 );
 
-export const updateDisplayName = createAction(
-    "[Auth] Update Display Name ",
-    props<{ displayName: string}>()
-);
-
-export const updatePhotoUrl = createAction(
-    "[AUTH] Update Photo Url",
-    props<{ photoUrl: string}>()
-)
 
 export const signOut = createAction(
     "[Auth] Sign Out",

@@ -5,7 +5,8 @@ import * as authActions from "./auth.actions";
 import * as authselectors from "./auth.selectors";
 import { AuthService } from "../../services/auth.service";
 import { Store } from "@ngrx/store";
-import { profileSelector } from "../profile/profile.selectors";
+import * as profileActions from "../profile/profile.actions";
+// import { profileSelector } from "../profile/profile.selectors";
 
 @Injectable()
 export class AuthEffects {
@@ -21,9 +22,10 @@ export class AuthEffects {
             ofType(authActions.signInWithEmailAndPassword),
             mergeMap(credentials => {
                 const { email, password } = credentials;
+                
                 return from(this.authService.signInUsingEmailAndPassword(email, password))
                     .pipe(
-                        map(user => authActions.confirmAuthentication({ user: user.providerData[0] })),
+                        // map( user => authActions.confirmAuthentication({ user: user.providerData[0] })),
                         catchError(e => of(authActions.authActionFailed({
                             error: e,
                             action: "sign in With Email And Password"
@@ -31,7 +33,10 @@ export class AuthEffects {
                     );
             })
         )
-    })
+    }, 
+{
+    dispatch: false
+});
 
     
     signInWithLink$ = createEffect(() => {
@@ -118,7 +123,7 @@ export class AuthEffects {
                 const { email, password } = credentials;
                 return from(this.authService.signUpWithEmailAndPassword(email, password))
                     .pipe(
-                        map(user => authActions.confirmAuthentication({ user: user.providerData[0] })),
+                        // map(user => authActions.confirmAuthentication({ user: user.providerData[0] })),
                         catchError(e => of(authActions.authActionFailed({
                             error: e,
                             action: "Sign Up With Email And Password"
@@ -126,7 +131,10 @@ export class AuthEffects {
                     );
             })
         );
-    })
+    },
+{
+    dispatch: false
+});
 
     
     signOut$ = createEffect(() => {
@@ -145,7 +153,16 @@ export class AuthEffects {
                     );
             })
         );
-    })
+    });
+
+
+    confirmSignOut$ = createEffect( () => {
+        const actions$ = inject(Actions);
+        return actions$.pipe(
+            ofType(authActions.confirmSignOut),
+            map( () => profileActions.resetProfileValues() )
+        );
+    });
 
 
     initiateemailVerification$ = createEffect(() => {

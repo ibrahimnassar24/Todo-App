@@ -29,9 +29,9 @@ import {
   signInWithPopup,
   signOut,
   TotpMultiFactorGenerator,
-  updatePassword,
-  updateProfile
+  updatePassword
 } from 'firebase/auth';
+import { convertUserToUserdetails } from '../state/auth/auth.model';
 
 
 
@@ -48,7 +48,8 @@ export class AuthService {
     this.auth = this.firebase.auth;
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
-        this.store.dispatch(authActions.confirmAuthentication({ user: { ...user.providerData[0] } }));
+        const temp = convertUserToUserdetails(user);
+        this.store.dispatch( authActions.confirmAuthentication({ user: temp }))
       } else {
         this.store.dispatch(authActions.confirmSignOut());
       }

@@ -3,17 +3,16 @@ import * as authActions from "./auth.actions";
 import { Auth, User, UserInfo } from "firebase/auth";
 import { AuthService } from "../../services/auth.service";
 import { TemplateRef } from "@angular/core";
-
-export interface AuthState {
-    isLogging: boolean;
-    user: UserInfo | null;
-    error: any;
-    status: "pending" | "loading" | "succeeded" | "failed"
-}
+import { AuthState, convertUserToUserdetails } from "./auth.model";
 
 export const initialValue: AuthState = {
     isLogging: false,
-    user: null,
+    userDetails: {
+        email: "",
+        emailVerified: null,
+        phoneNumber: "",
+        providerId: ""
+    },
     error: null,
     status: "pending"
 };
@@ -36,17 +35,8 @@ export const authReducer = createReducer(
 
     on(authActions.completeAuthAction,
         ( s ) => {
-            console.log("hello")
             const temp: AuthState = {
                 ...s,
-                user: {
-                    displayName: s.user?.displayName ?? "",
-                    phoneNumber: s.user?.phoneNumber ?? "",
-                    photoURL: s.user?.photoURL ?? "",
-                    email: s.user?.email  ?? "",
-                    providerId: s.user?.providerId ?? "",
-                    uid: s.user?.uid ?? ""
-                },
                 status: "succeeded"
             }
 
@@ -60,9 +50,8 @@ export const authReducer = createReducer(
             const temp: AuthState = {
                 ...s,
                 isLogging: true,
-                user,
+                userDetails: user,
                 error: null,
-                status: "succeeded"
             };
             return temp;
         }
@@ -74,9 +63,8 @@ export const authReducer = createReducer(
             const temp: AuthState = {
                 ...s,
                 isLogging: false,
-                user: null,
+                userDetails: { ...initialValue.userDetails },
                 error: null,
-                status: "succeeded"
             };
 
             return temp;

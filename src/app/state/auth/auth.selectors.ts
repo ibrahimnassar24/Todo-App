@@ -1,5 +1,5 @@
 import { createSelector, createFeatureSelector } from "@ngrx/store";
-import { AuthState } from "./auth.reducer";
+import { AuthState } from "./auth.model";
 
 export const authSelector = createFeatureSelector<AuthState>("auth");
 
@@ -18,17 +18,28 @@ export const selectError = createSelector(
     (s) => s.error
 );
 
-export const selectUser = createSelector(
+
+export const selectUserDetails = createSelector(
     authSelector,
-    (s) => s.user
+    (s) => s.userDetails
 );
 
-export const selectUserPhotoUrl = createSelector(
+export const selectEmail = createSelector(
     authSelector,
-    (s) => s.user?.photoURL
+    (s) => s.userDetails.email
 );
 
-export const selectUserDisplayName = createSelector(
+export const selectEmailVerified = createSelector(
     authSelector,
-    (s) => s.user?.displayName
+    (s) => s.userDetails.emailVerified
+);
+
+export const selectProviderId = createSelector(
+    authSelector,
+    (s) => s.userDetails.providerId
+);
+
+export const selectPhoneNumber = createSelector(
+    authSelector,
+    (s) => s.userDetails.phoneNumber
 );
