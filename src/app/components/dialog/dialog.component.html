@@ -1,6 +1,9 @@
 <h3 mat-dialog-title>{{ data.title }}</h3>
 
 <mat-dialog-content>
+    <div *ngIf="data.url">
+<img [src]="data.url">
+    </div>
 <mat-form-field>
     <input type="text" matInput [formControl]="value">
 </mat-form-field>

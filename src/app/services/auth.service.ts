@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { from, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import QrCode from 'qrcode';
@@ -29,9 +29,12 @@ import {
   signInWithPopup,
   signOut,
   TotpMultiFactorGenerator,
-  updatePassword
+  updateEmail,
+  updatePassword,
+  verifyBeforeUpdateEmail
 } from 'firebase/auth';
 import { convertUserToUserdetails } from '../state/auth/auth.model';
+import { DialogBoxService } from './dialog-box.service';
 
 
 
@@ -43,12 +46,14 @@ export class AuthService {
 
   constructor(
     private firebase: FirebaseService,
-    private store: Store
+    private store: Store,
+    private dialogBox: DialogBoxService
   ) {
     this.auth = this.firebase.auth;
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
         const temp = convertUserToUserdetails(user);
+        
         this.store.dispatch( authActions.confirmAuthentication({ user: temp }))
       } else {
         this.store.dispatch(authActions.confirmSignOut());
@@ -71,7 +76,6 @@ export class AuthService {
   async signInUsingEmailAndPassword(email: string, password: string) {
     try {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
-      console.log("sign in successfully");
       return userCredential.user;
     } catch (e) {
 
@@ -153,9 +157,8 @@ export class AuthService {
 
   async sendVerificationEmail() {
     try {
-      console.log("status " + this.auth.currentUser?.emailVerified)
       const settings: ActionCodeSettings = {
-        url: "http://localhost:4200/test",
+        url: "http://localhost:4200/email-verification",
         handleCodeInApp: true
       };
       const user = this.auth.currentUser;
@@ -168,7 +171,7 @@ export class AuthService {
 
   async confirmVerificationEmail() {
     try {
-      console.log("verification email confirmed")
+
     } catch (e) {
       throw e;
     }
@@ -182,7 +185,6 @@ export class AuthService {
 
       await updatePassword(user!, newPassword);
 
-      console.log("password has been changed");
     } catch (e) {
       throw e;
     }
@@ -243,9 +245,12 @@ export class AuthService {
   }
 
 
-  async enrollTotp(password: string) {
+  async enrollTotp() {
     try {
+      
+      const password = await this.dialogBox.openDialog("enter your password");
       await this.reauthenticate(password);
+
       const user = this.auth.currentUser;
       if (!user) throw "authentication required";
       const session = await multiFactor(user).getSession();
@@ -254,7 +259,7 @@ export class AuthService {
         user.email!,
         "Todo Web App"
       );
-      const totp = await this.generateQrCode(qrStr);
+      const totp = await this.getTotp(qrStr);
       const assertion = TotpMultiFactorGenerator.assertionForEnrollment(
         totpSecret,
         totp
@@ -271,40 +276,40 @@ export class AuthService {
   }
 
 
-  generateQrCode(data: string) {
-    return new Promise<void>((resolve, reject) => {
-      QrCode.toDataURL(data, { width: 300 }, (e, url) => {
-        if (e) {
-          reject(e)
-        } else {
-          const img = document.createElement("img");
-          img.src = url;
-          const div = document.createElement("div");
-          const btn = document.createElement("button");
-          btn.textContent = "close";
-          div.appendChild(img);
-          div.appendChild(btn);
-          document.body.appendChild(div);
-          btn.addEventListener("click", () => {
-            div.remove();
-            resolve()
-          })
+  async getTotp(data: string) {
+  
+    try {
+      const url = await this.generateQrCode(data);
+      const totp = await this.dialogBox.openDialog(
+        "please scan the QR code then enter the one-time password",
+        url
+      );
+      return totp;
+    } catch(e) {
+      throw e;
+    }
+  }
+
+  private generateQrCode( data: string) {
+    return new Promise<string>( (resolve, reject) => {
+      QrCode.toDataURL(
+        data,
+        (e, url) => {
+          if (e) {
+            reject(e);
+          } else {
+            resolve(url);
+          }
         }
-      })
-    })
-      .then(() => {
-        return new Promise<string>((resolve, reject) => {
-          const temp = prompt("enter totp");
-          resolve(temp ?? "")
-        })
-      })
+      );
+    });
   }
 
 
   async signInWithTotp(error: MultiFactorError) {
     try {
       const resolver = getMultiFactorResolver(this.auth, error);
-      const totp = prompt("enter the password on the authenticator app");
+      const totp = await this.dialogBox.openDialog("enter the TOTP from the authenticator app");
       const assertion = TotpMultiFactorGenerator.assertionForSignIn(
         resolver.hints[0].uid,
         totp!
@@ -312,7 +317,6 @@ export class AuthService {
       const userCredential = await resolver.resolveSignIn(
         assertion
       );
-      console.log("signed in with totp")
       return userCredential.user;
     } catch (e) {
       throw e;
@@ -320,14 +324,12 @@ export class AuthService {
   }
 
 
-  async unenrollFromTotp() {
+  async unenrollFromTotp( enrollmentId: string) {
 
     try {
       const user = this.auth.currentUser;
       if (!user) throw "you should sign in first";
       const mfa = multiFactor(user);
-      const enrollmentId = mfa.enrolledFactors[0];
-      console.log(enrollmentId)
       await mfa.unenroll(enrollmentId)
     } catch (e) {
 
@@ -342,6 +344,22 @@ export class AuthService {
   }
 
 
+  async setEmail(email: string) {
+    try {
+      const dialogBox = this.dialogBox;
+      const user = this.auth.currentUser;
+      if (user) {
+        const password = await dialogBox.openDialog("Please enter your password");
+        await this.reauthenticate(password);
+        await verifyBeforeUpdateEmail(user, email, null);
+      } else {
+        throw "authentication required";
+      }
+    } catch(e) {
+      console.log(e);
+      throw e;
+    }
+  }
 
 
   isLogged() {

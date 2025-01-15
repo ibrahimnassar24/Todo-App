@@ -11,15 +11,18 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA
 } from "@angular/material/dialog";
+import { CommonModule } from '@angular/common';
 
 export interface dialogData {
   title: string;
   value: string | null | undefined;
+  url?: string;
 }
 
 @Component({
   selector: 'app-dialog',
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,

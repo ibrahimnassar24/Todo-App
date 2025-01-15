@@ -11,7 +11,8 @@ export const initialValue: AuthState = {
         email: "",
         emailVerified: null,
         phoneNumber: "",
-        providerId: ""
+        providerId: "",
+        mfa: []
     },
     error: null,
     status: "pending"
@@ -51,7 +52,7 @@ export const authReducer = createReducer(
                 ...s,
                 isLogging: true,
                 userDetails: user,
-                error: null,
+                error: null
             };
             return temp;
         }
@@ -64,7 +65,7 @@ export const authReducer = createReducer(
                 ...s,
                 isLogging: false,
                 userDetails: { ...initialValue.userDetails },
-                error: null,
+                error: null
             };
 
             return temp;

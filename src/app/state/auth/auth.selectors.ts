@@ -43,3 +43,8 @@ export const selectPhoneNumber = createSelector(
     authSelector,
     (s) => s.userDetails.phoneNumber
 );
+
+export const selectMfa = createSelector(
+    authSelector,
+    (s) => s.userDetails.mfa
+);

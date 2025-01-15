@@ -1,4 +1,4 @@
-import { User } from "firebase/auth";
+import { MultiFactorInfo, multiFactor, User } from "firebase/auth";
 
 
 export interface AuthState {
@@ -13,6 +13,7 @@ export interface UserDetails {
     emailVerified: boolean | null;
     providerId: string | null;
     phoneNumber: string | null;
+    mfa: MultiFactorInfo[];
 }
 
 export const convertUserToUserdetails = (user: User) =>  {
@@ -20,7 +21,8 @@ export const convertUserToUserdetails = (user: User) =>  {
         email: user.email,
         emailVerified: user.emailVerified,
         providerId: user.providerId,
-        phoneNumber: user.phoneNumber
+        phoneNumber: user.phoneNumber,
+        mfa: multiFactor(user).enrolledFactors
     };
 
     return temp;

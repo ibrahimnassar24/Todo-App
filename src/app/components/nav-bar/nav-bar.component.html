@@ -1,19 +1,15 @@
 <nav>
+    <mat-toolbar>
 
-    <div class="nav-wrapper">
         <div class="logo-wrapper">
             <h1>logo</h1>
         </div>
 
-        <div mat-tab-nav-bar class="links-wrapper">
+        <div mat-tab-nav-bar [tabPanel]="panel" class="links-wrapper">
 
-            <a mat-tab-link routerLink="/home" [active]="activeLink == 0" (click)="activeLink = 0">home</a>
-
-            <a mat-tab-link routerLink="/about" [active]="activeLink == 1" (click)="activeLink = 1">
-                about
-            </a>
-
-            <a mat-tab-link routerLink="/test" [active]="activeLink == 2" (click)="activeLink = 2">test</a>
+            <a mat-tab-link routerLink="/home" [active]="isactive(links.home)" (click)="setActiveLink(links.home)">Home</a>
+            <a mat-tab-link routerLink="/about" [active]="activeLink() == '/about'" (click)="setActiveLink(links.about)">About</a>
+            <a mat-tab-link routerLink="/test" [active]="activeLink() == '/test'" (click)="setActiveLink(links.test)">Test</a>
 
         </div>
 
@@ -21,5 +17,6 @@
             <mat-slide-toggle aria-label="dark mode" (change)="switchMode($event)"></mat-slide-toggle>
             <app-profile-menu></app-profile-menu>
         </div>
-    </div>
+
+    </mat-toolbar>
 </nav>

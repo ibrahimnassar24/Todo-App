@@ -1,1 +1,67 @@
-<p>security-page works!</p>
+<h1>Security Settings</h1>
+<mat-grid-list cols="3" rowHeight="3:1">
+
+    <mat-grid-tile>
+        email
+    </mat-grid-tile>
+    <mat-grid-tile>
+        {{ email$ | async}}
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <button mat-button (click)="onUpdateEmail()">update</button>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+        password
+    </mat-grid-tile>
+    <mat-grid-tile>
+        *****
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <button mat-button (click)="onUpdatePassword()">update</button>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+        email verified
+    </mat-grid-tile>
+    <mat-grid-tile>
+        {{ emailVerified$ | async}}
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <button mat-button (click)="onVerifyEmail()" [disabled]="emailVerified$ | async">verify</button>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+        phone number
+    </mat-grid-tile>
+    <mat-grid-tile>
+        value
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <button mat-button>update</button>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+        two-factor authentication
+    </mat-grid-tile>
+    <mat-grid-tile>
+        value
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <button mat-button (click)="onEnrollTopt()" >activate</button>
+    </mat-grid-tile>
+
+</mat-grid-list>
+
+<div>
+    <mat-grid-list cols="2">
+        @for (item of mfa$ | async; track $index) {
+            <mat-grid-tile>
+                {{ item.displayName }}
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <button mat-button (click)="onUnrollFromTotp(item.uid)">unenroll</button>
+            </mat-grid-tile>
+        }
+    </mat-grid-list>
+</div>

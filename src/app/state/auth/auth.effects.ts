@@ -1,4 +1,4 @@
-import { Injectable, inject } from "@angular/core";
+import { Injectable, inject, ɵgetInjectableDef } from "@angular/core";
 import { createEffect, Actions, ofType } from "@ngrx/effects";
 import { catchError, concatMap, from, map, merge, mergeMap, of, tap, withLatestFrom } from "rxjs";
 import * as authActions from "./auth.actions";
@@ -13,32 +13,31 @@ export class AuthEffects {
 
     constructor(
         private authService: AuthService,
-    ) {}
+    ) { }
 
 
-        signInWithEmailAndPassword$ = createEffect(() => {
+    signInWithEmailAndPassword$ = createEffect(() => {
         const actions$ = inject(Actions);
         return actions$.pipe(
             ofType(authActions.signInWithEmailAndPassword),
-            mergeMap(credentials => {
-                const { email, password } = credentials;
-                
+            mergeMap(action => {
+                const { email, password } = action;
+
                 return from(this.authService.signInUsingEmailAndPassword(email, password))
                     .pipe(
-                        // map( user => authActions.confirmAuthentication({ user: user.providerData[0] })),
                         catchError(e => of(authActions.authActionFailed({
                             error: e,
-                            action: "sign in With Email And Password"
+                            action: action.type
                         })))
                     );
             })
         )
-    }, 
-{
-    dispatch: false
-});
+    },
+        {
+            dispatch: false
+        });
 
-    
+
     signInWithLink$ = createEffect(() => {
         const actions$ = inject(Actions);
 
@@ -58,7 +57,7 @@ export class AuthEffects {
         );
     });
 
-    
+
     confirmSignInWithLink$ = createEffect(() => {
         const actions$ = inject(Actions);
         return actions$.pipe(
@@ -77,7 +76,7 @@ export class AuthEffects {
 
     });
 
-    
+
     signInWithGoogle$ = createEffect(() => {
         const actions$ = inject(Actions);
         return actions$.pipe(
@@ -96,7 +95,7 @@ export class AuthEffects {
         );
     });
 
-    
+
     signInWithFacebook$ = createEffect(() => {
         const actions$ = inject(Actions);
         return actions$.pipe(
@@ -114,29 +113,31 @@ export class AuthEffects {
         );
     })
 
-    
+
+
+
+
     signUp$ = createEffect(() => {
         const actions$ = inject(Actions);
         return actions$.pipe(
             ofType(authActions.signUp),
-            mergeMap(credentials => {
-                const { email, password } = credentials;
+            mergeMap(action => {
+                const { email, password } = action;
                 return from(this.authService.signUpWithEmailAndPassword(email, password))
                     .pipe(
-                        // map(user => authActions.confirmAuthentication({ user: user.providerData[0] })),
                         catchError(e => of(authActions.authActionFailed({
                             error: e,
-                            action: "Sign Up With Email And Password"
+                            action: action.type
                         })))
                     );
             })
         );
     },
-{
-    dispatch: false
-});
+        {
+            dispatch: false
+        });
 
-    
+
     signOut$ = createEffect(() => {
         const actions$ = inject(Actions);
         return actions$.pipe(
@@ -145,7 +146,6 @@ export class AuthEffects {
 
                 return from(this.authService.logOut())
                     .pipe(
-                        map(() => authActions.completeAuthAction()),
                         catchError(e => of(authActions.authActionFailed({
                             error: e,
                             action: "Sign Out"
@@ -153,14 +153,28 @@ export class AuthEffects {
                     );
             })
         );
-    });
+    },
+        {
+            dispatch: false
+        });
 
 
-    confirmSignOut$ = createEffect( () => {
+    confirmSignOut$ = createEffect(() => {
         const actions$ = inject(Actions);
         return actions$.pipe(
             ofType(authActions.confirmSignOut),
-            map( () => profileActions.resetProfileValues() )
+            map(() => profileActions.resetProfileValues()),
+            map(() => authActions.completeAuthAction())
+        );
+    });
+
+
+    confirmAuthentication$ = createEffect(() => {
+        const actions$ = inject(Actions);
+
+        return actions$.pipe(
+            ofType(authActions.confirmAuthentication),
+            map(() => authActions.completeAuthAction())
         );
     });
 
@@ -182,25 +196,7 @@ export class AuthEffects {
         );
     });
 
-    
-    confirmEmailVerification$ = createEffect(() => {
-        const actions$ = inject(Actions);
-        return actions$.pipe(
-            ofType(authActions.confirmEmailVerification),
-            mergeMap(() => {
-                return from(this.authService.confirmVerificationEmail())
-                    .pipe(
-                        map(() => authActions.completeAuthAction()),
-                        catchError(e => of(authActions.authActionFailed({
-                            error: e,
-                            action: "Confirm Verification Email"
-                        })))
-                    );
-            })
-        );
-    });
 
-    
     updatePassword$ = createEffect(() => {
         const actions$ = inject(Actions);
         const store = inject(Store);
@@ -221,6 +217,81 @@ export class AuthEffects {
 
             )
 
+        );
+    });
+
+
+    updateEmail$ = createEffect(() => {
+        const store = inject(Store);
+        const actions$ = inject(Actions);
+        return actions$.pipe(
+            ofType(authActions.updateEmail),
+            tap(() => store.dispatch(
+                authActions.initiateAuthAction()
+            )),
+
+            mergeMap(action => {
+                return from(this.authService.setEmail(action.email))
+                    .pipe(
+                        map(() => authActions.completeAuthAction()),
+                        catchError(e => of(authActions.authActionFailed({
+                            error: e,
+                            action: action.type
+                        })))
+                    )
+            })
+
+        );
+    });
+
+
+    enrollTotp$ = createEffect(() => {
+        const actions$ = inject(Actions);
+        const store = inject(Store);
+
+        return actions$.pipe(
+            ofType(authActions.enrollTotp),
+
+            tap(() => store.dispatch(authActions.initiateAuthAction())),
+
+            mergeMap(action => {
+                return from(this.authService.enrollTotp())
+                    .pipe(
+                        map(() => authActions.completeAuthAction()),
+                        catchError(e => of(authActions.authActionFailed({
+                            error: e,
+                            action: action.type
+                        })))
+                    );
+            })
+        );
+    });
+
+
+    unenrollFromTotp$ = createEffect(() => {
+
+        const actions$ = inject(Actions);
+        const store = inject(Store);
+
+        return actions$.pipe(
+            ofType(authActions.unenrollFromTotp),
+
+            tap(() =>
+                store.dispatch(authActions.initiateAuthAction())
+            ),
+
+            mergeMap(action => {
+                return from(this.authService.unenrollFromTotp(action.enrollmentId))
+                    .pipe(
+                        map(() => authActions.completeAuthAction()),
+                        catchError(e => of(
+                            authActions.authActionFailed({
+                                error: e,
+                                action: action.type
+                            })
+                        ))
+                    )
+            })
         );
     });
 

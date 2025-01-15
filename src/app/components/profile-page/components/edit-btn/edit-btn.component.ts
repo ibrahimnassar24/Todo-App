@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { DialogComponent, dialogData } from '../dialog/dialog.component';
+import { DialogComponent, dialogData } from '../../../dialog/dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({

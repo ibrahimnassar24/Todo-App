@@ -60,7 +60,8 @@ export const updatePassword = createAction(
 );
 
 export const updateEmail = createAction(
-    "[Auth] Update Email"
+    "[Auth] Update Email",
+    props<{ email: string}>()
 );
 
 
@@ -80,4 +81,13 @@ export const completeAuthAction = createAction(
 export const authActionFailed = createAction(
     "[Auth] Auth Action Failed",
     props<{ error: any, action: string }>()
+);
+
+export const enrollTotp = createAction(
+    "[Auth] Enroll TOTP"
+);
+
+export const unenrollFromTotp = createAction(
+    "[Auth] Unenroll From TOTP",
+    props<{ enrollmentId: string}>()
 );
